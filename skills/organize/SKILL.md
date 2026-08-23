@@ -6,7 +6,8 @@ description: "Sort inbox/ notes into topic folders using the fuller vault contex
 # Organize the vault
 
 Read [the note format and vault layout reference](../capture/references/note-format.md)
-first — organize reuses its folder-placement heuristic and linking pass.
+first — organize reuses its folder-placement rule, index maintenance,
+and linking pass.
 
 This skill never runs as a side effect of `capture` or anything else —
 only when the user explicitly asks (e.g. "organize the inbox", "sort my
@@ -19,17 +20,22 @@ similar.
 
 1. **Resolve the vault**, the same way as `capture`. List everything in
    `inbox/`. If it's empty, say so and stop.
-2. **For each inbox note**, decide where it now belongs using the
-   [folder-placement heuristic](../capture/references/note-format.md#folder-placement)
-   — the same logic `capture` uses, but now weighed against whatever else
-   has been captured since. Before moving, re-check the
+2. **For each inbox note**, decide its destination — `projects/<slug>/`
+   or `notes/<topic>/` — using the same
+   [folder placement](../capture/references/note-format.md#folder-placement-notes-vs-projects-vs-inbox)
+   rule and fallback question as `capture`, but with the benefit of
+   whatever's been captured since. Before moving, re-check the
    [uniqueness rule](../capture/references/note-format.md#slug-and-filename-uniqueness)
-   against the destination: if the target folder already has a same-named
-   file, ask the user whether to update it or rename the incoming note —
-   never overwrite. Move the note (a plain move; delete-and-rewrite only
-   if the host has no move primitive), creating the destination folder if
-   a clear new grouping emerges. A note that's still not a confident fit
-   stays in `inbox/` — don't force placement just to empty the folder.
+   against the destination: if the target folder already has a
+   same-named file, ask the user whether to update it or rename the
+   incoming note — never overwrite. Move the note (a plain move;
+   delete-and-rewrite only if the host has no move primitive), creating
+   the destination folder if a clear new grouping emerges. If it lands
+   in `notes/<topic>/`, update
+   [the index](../capture/references/note-format.md#indexes) for that
+   topic. A note that's still not a confident fit for either stays in
+   `inbox/` — organize doesn't force placement just to empty the
+   folder.
 3. **After moving a note**, re-run the
    [linking pass](../capture/references/note-format.md#linking-pass)
    against the fuller vault — a note captured before a related one
