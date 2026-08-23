@@ -34,6 +34,15 @@ updates. Both have since been redesigned onto this note format and are
 implemented (see their own `SKILL.md` files and "Implemented: defuddle
 and autoresearch" below).
 
+## Resolving the vault
+
+In this order: an explicit directory named in the current request;
+then the `OBSIDIAN_VAULT` environment variable, if set; then the
+current directory as a last resort. The environment-variable fallback
+is what lets `ask` (and the other skills) work consistently across
+unrelated project directories and separate chat sessions, without
+repeating the vault path in every request.
+
 ## Vault layout
 
 ```
@@ -64,8 +73,9 @@ use if any are missing.
 Topic folders under `notes/` and project folders under `projects/` are
 still freely inferred by name — capture and organize choose them the
 same way they choose a title — just nested one level under a fixed root
-instead of directly at the vault root. Nested subtopics
-(`notes/<topic>/<subtopic>/...`) are still allowed.
+instead of directly at the vault root. Nesting stays shallow: at most
+one subtopic level (`notes/<topic>/<subtopic>/...`); a grouping that
+seems to need a third level should be its own topic or project instead.
 
 `inbox/` is where a note lands when `capture` isn't confident whether
 something is a `notes/` topic or a `projects/` initiative, or which
@@ -147,6 +157,12 @@ is an `inbox/` case), ask the user directly — e.g. "Is this part of an
 ongoing project, or a general reference note?" — rather than picking
 silently.
 
+**Explicit override:** when the request itself says to add it to the
+inbox (e.g. "add this to inbox", "drop this in the inbox") rather than
+a general "capture/save/file this," skip this decision entirely and
+file straight to `inbox/` — an explicit instruction, not a fallback
+guess, deferring the placement call to a later `organize` pass.
+
 ## Indexes: entry points into `notes/`
 
 Every `notes/<topic>/` folder gets one corresponding
@@ -224,7 +240,15 @@ of `capture`.
 
 1. Resolve the vault. List everything in `inbox/`. If it's empty, say so
    and stop.
-2. For each inbox note, decide its destination — `projects/<slug>/` or
+2. Normalize anything that isn't already in the template's shape — a
+   file the user dropped into `inbox/` manually (not via `capture`) may
+   have no frontmatter or source/content/connections structure. Wrap it
+   into `templates/note-template.md`'s current shape (derive a
+   title/slug, set the source role, place its existing text verbatim
+   under the content role) before deciding where it goes. This is
+   structural normalization, not a rewrite — the wording is preserved
+   exactly as given.
+3. For each inbox note, decide its destination — `projects/<slug>/` or
    `notes/<topic>/` — using the same heuristic and fallback question as
    `capture`, but with the benefit of whatever's been captured since.
    Move it (plain move, or delete+rewrite if the host has no move
@@ -233,11 +257,11 @@ of `capture`.
    `indexes/<Topic>.md` exists and lists it. A note that's still not a
    confident fit for either stays in `inbox/` — organize doesn't force
    placement just to empty the folder.
-3. After moving a note, re-run the linking pass (capture step 9) against
+4. After moving a note, re-run the linking pass (capture step 9) against
    the fuller vault — a note captured a week before a related one may not
    have had anything to link to yet.
-4. Report what moved where, what got newly linked, and what's still
-   sitting in `inbox/` unplaced.
+5. Report what moved where, what got newly linked, what got normalized
+   from a raw drop, and what's still sitting in `inbox/` unplaced.
 
 **Link audit mode:** when asked to find unlinked/isolated notes (e.g. "any
 orphan notes?", "what's not connected?"), scan every note's outgoing
@@ -247,9 +271,10 @@ organize doesn't force-link an orphan; a genuinely standalone note is a
 valid outcome, not a defect. The user decides whether to connect it (via a
 follow-up capture/edit) or leave it.
 
-**Explicitly out of scope for `organize`:** does not touch note content
-beyond adding links, does not rewrite summaries, does not run automatically
-after every capture.
+**Explicitly out of scope for `organize`:** does not rewrite a note's
+wording or summarize on its own initiative — step 2's normalization
+only wraps already-existing text into the template's structure, never
+rephrases it; does not run automatically after every capture.
 
 ## `ask` skill
 
