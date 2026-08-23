@@ -1,6 +1,6 @@
 ---
 name: capture
-description: "Capture a source — pasted text, a local file path, an image, or a URL — into the vault as one plain Markdown note: derive a title/slug, place it in an existing or new topic folder (or inbox/ if unsure), copy any binary attachment, and add wikilinks to genuinely related notes. Use when the user gives Claude a source and asks to capture/save/file it. This is the minimal note-per-source system (no transactions, ledgers, or MoCs) — see save/wiki-ingest for the legacy transaction-based system."
+description: "Capture a source — pasted text, a local file path, an image, or a URL — into the vault as one plain Markdown note: derive a title/slug, place it in an existing or new topic folder (or inbox/ if unsure), copy any binary attachment, and add wikilinks to genuinely related notes. Use when the user gives Claude a source and asks to capture/save/file it. Plain file reads/writes/copies only — no transactions, ledgers, or MoCs."
 ---
 
 # Capture a source into the vault

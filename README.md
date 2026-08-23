@@ -60,18 +60,6 @@ format and folder-placement rules they share live in
   no Obsidian plugin — Obsidian itself is optional, for the visual graph
   and wikilink navigation.
 
-## Legacy system
-
-This repo previously shipped a much larger transaction-based system: 12
-additional skills, a Python core (`claude_obsidian/`), source/claim
-ledgers, address allocation, and Map-of-Content maintenance, including
-transaction-based versions of `defuddle` and `autoresearch`. It's
-preserved under [`archive/`](archive/) for reference — not wired up as
-active skills in this checkout. The active `defuddle` and `autoresearch`
-above are the redesigned versions that file plain notes instead; see
-[archive's AGENTS.md section](AGENTS.md#archived-legacy-system) if you
-need to work with the original transaction-based copies directly.
-
 ## Lineage and license
 
 The design follows
