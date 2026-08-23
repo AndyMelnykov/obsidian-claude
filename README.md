@@ -1,97 +1,88 @@
-# obsidian-claude
-<p align="center">
-  <strong>Turn Obsidian into a knowledge base that gets more useful every time you use it.</strong><br>
-  Capture sources, write connected notes, get grounded answers, keep the vault clean—all as plain files you own.
-</p>
+<h1 align="center">claude-obsidian</h1>
 
 <p align="center">
-  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-2563eb.svg" alt="MIT license"></a>
-  <a href="https://code.claude.com/docs/en/plugins"><img src="https://img.shields.io/badge/Claude%20Code-plugin-7c3aed" alt="Claude Code plugin"></a>
-  <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/release-v2.1.0-d97745" alt="Release v2.1.0"></a>
+  <strong>Capture a source, file it into your Obsidian vault, ask questions from what's already there.</strong><br>
+  Five plain Claude Code skills, no plugin core, no database — just Markdown files you own.
 </p>
 
-claude-obsidian is a local-first knowledge system for Claude Code and other
-[Agent Skills](https://agentskills.io) hosts. It turns source material into
-linked, source-cited Obsidian notes, answers questions from what's already in
-your vault, and keeps everything as normal Markdown—no plugin lockup, no
-cloud database, no silent uploads.
+claude-obsidian is a local-first note system for Claude Code and other
+[Agent Skills](https://agentskills.io) hosts. `capture`, `organize`, and
+`ask` turn a source (pasted text, a file, an image) into one short,
+linked Markdown note, sorted into a folder structure that makes sense —
+no transactions, ledgers, or index maintenance required. `defuddle` and
+`autoresearch` extend that to web pages and bounded research, each behind
+its own explicit network consent.
 
 ## Quick start
 
-```bash
-git clone https://github.com/AgriciDaniel/claude-obsidian.git
-cd claude-obsidian
-
-# create a separate vault for your notes (previews the plan first)
-python3 scripts/claude-obsidian.py init "$HOME/Documents/MyKnowledgeVault" --apply
-```
-
-Open that vault in Obsidian, then run Claude Code from inside it:
-
-```bash
-cd "$HOME/Documents/MyKnowledgeVault"
-claude --plugin-dir /absolute/path/to/claude-obsidian
-```
+Point Claude Code at any directory you treat as your vault — a fresh
+folder, or one already open in Obsidian — and ask it to capture something:
 
 ```text
-/claude-obsidian:wiki
+Capture this into my vault: <paste text, a file path, or an image>
 ```
 
-Drop a file in `inbox/` and run `/claude-obsidian:wiki-ingest`. Ask questions
-with `/claude-obsidian:wiki-query`. Save a specific answer with
-`/claude-obsidian:save`.
+`capture` creates the vault skeleton on first use, derives a title, and
+links the note to genuinely related notes. Notes land under
+`notes/<topic>/` for reference material or `projects/<project-slug>/`
+for an active initiative — `capture` asks if it's genuinely unsure
+which, rather than guessing; `inbox/` is the fallback when neither is
+confident. If you'd rather decide later, just say "add this to inbox"
+instead of "capture this" and it skips straight there. Each `notes/`
+topic gets a matching `indexes/<Topic>.md` entry-point page, maintained
+automatically as notes are added.
 
-Adopting an existing vault, other hosts (Codex, OpenCode, Gemini), and full
-setup details are in the [installation guide](docs/install-guide.md) (see
-also [Windows & WSL](docs/windows-wsl.md)).
+You can also drop a file straight into `inbox/` yourself (through
+Obsidian, or the filesystem) without going through `capture` at all —
+`organize` will recognize it's not yet in the note template's shape and
+wrap it in on its next pass, without changing your wording.
 
-## What it does
+Working from a different project's Claude Code or Codex session (or a
+different chat entirely) and want `ask`/`capture` to still find this
+vault? Set `OBSIDIAN_VAULT=/path/to/this/vault` once (e.g. in your
+shell profile) instead of stating the path every time.
 
-- **Captures sources**, not just summaries—originals are kept, notes cite
-  back to them.
-- **Grounds claims** in vault evidence; unsupported or contradictory claims
-  stay visible instead of being smoothed over.
-- **Connects notes** into indexes, Maps of Content, and Canvas views.
-- **Answers from the vault** instead of starting every conversation from
-  zero.
-- **Writes safely**—one operation at a time, previewed before it's applied,
-  recoverable if interrupted.
+Using Claude.ai or ChatGPT in the browser — for a YouTube summary, say
+— note that the web chat itself can't reach your local vault; get the
+summary there, then paste it into a local `capture` request the same
+way you'd paste any other text.
+
+Once you've captured a few things:
+
+```text
+Organize the inbox
+Ask the vault: <question>
+```
+
+`organize` sorts whatever's sitting in `inbox/` into `notes/` or
+`projects/` and re-links notes that had nothing to link to yet; `ask`
+checks `indexes/` first, then answers a question from the vault's own
+notes, and never writes to it.
+
+Full design details are in
+[docs/superpowers/specs/2026-08-22-simple-capture-design.md](docs/superpowers/specs/2026-08-22-simple-capture-design.md).
 
 ## Skills
 
-| Core | | Extended | |
-|---|---|---|---|
-| `wiki` | Init/adopt a vault, route work | `autoresearch` | Bounded web research |
-| `save` | Save one scoped answer | `canvas` | Obsidian Canvas maintenance |
-| `wiki-ingest` | Sources → linked pages | `defuddle` | Clean web content pre-ingest |
-| `wiki-query` | Read-only answers from the vault | `wiki-fold` | Rollups of the operation log |
-| `wiki-lint` | Find dead links, orphans, gaps | `wiki-mode` | Generic/LYT/PARA/Zettelkasten filing |
-| — | — | `wiki-retrieve` | BM25 + optional reranking |
-| — | — | `wiki-cli` | Obsidian CLI reads/search |
+| Skill | What it does |
+|---|---|
+| `capture` | Source → one filed, linked Markdown note |
+| `organize` | Sort `inbox/` into topic folders; audit for unlinked notes |
+| `ask` | Read-only, source-cited answers from the vault |
+| `defuddle` | Fetch and clean one HTTPS page (explicit consent), then file it like `capture` |
+| `autoresearch` | Bounded web research (explicit consent), filed as one or more notes |
 
-Plus reference skills for Obsidian Markdown, Bases, and a structured review
-loop (`think`). Each skill's exact contract lives in `skills/<name>/SKILL.md`.
+Each skill's exact contract lives in `skills/<name>/SKILL.md`; the note
+format and folder-placement rules they share live in
+[skills/capture/references/note-format.md](skills/capture/references/note-format.md).
 
 ## Requirements
 
-- Python 3.11+
-- Obsidian (optional, for the visual experience)
-- Git, for development or explicit checkpoints
+- Just Claude Code (or another Agent Skills host). No Python, no database,
+  no Obsidian plugin — Obsidian itself is optional, for the visual graph
+  and wikilink navigation.
 
-Native Windows supports read-only/dry-run commands only; vault writes require
-WSL. See the [Windows & WSL guide](docs/windows-wsl.md).
-
-## Development
-
-```bash
-make test
-```
-
-See [CONTRIBUTING.md](CONTRIBUTING.md), [SECURITY.md](SECURITY.md), and the
-[Compound Vault architecture](docs/compound-vault-guide.md) for the
-transaction model and provenance contracts behind the safety claims above.
-
-## Lineage, license, and attribution
+## Lineage and license
 
 The design follows
 [Andrej Karpathy's LLM Wiki pattern](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f)
@@ -99,5 +90,4 @@ and uses [kepano/obsidian-skills](https://github.com/kepano/obsidian-skills)
 as the reference substrate for Obsidian Markdown, Bases, and JSON Canvas
 syntax.
 
-MIT licensed. See [ATTRIBUTION.md](ATTRIBUTION.md) and
-[CITATION.cff](CITATION.cff).
+MIT licensed.
