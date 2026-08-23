@@ -22,9 +22,13 @@ folder, or one already open in Obsidian — and ask it to capture something:
 Capture this into my vault: <paste text, a file path, or an image>
 ```
 
-`capture` creates `inbox/` and `attachments/` on first use, derives a
-title, files the note in an existing or new topic folder (or `inbox/` if
-it isn't confident), and links it to genuinely related notes.
+`capture` creates the vault skeleton on first use, derives a title, and
+links the note to genuinely related notes. Notes land under
+`notes/<topic>/` for reference material or `projects/<project-slug>/`
+for an active initiative — `capture` asks if it's genuinely unsure
+which, rather than guessing; `inbox/` is the fallback when neither is
+confident. Each `notes/` topic gets a matching `indexes/<Topic>.md`
+entry-point page, maintained automatically as notes are added.
 
 Once you've captured a few things:
 
@@ -33,9 +37,10 @@ Organize the inbox
 Ask the vault: <question>
 ```
 
-`organize` sorts whatever's sitting in `inbox/` into topic folders and
-re-links notes that had nothing to link to yet; `ask` answers a question
-from the vault's own notes and never writes to it.
+`organize` sorts whatever's sitting in `inbox/` into `notes/` or
+`projects/` and re-links notes that had nothing to link to yet; `ask`
+checks `indexes/` first, then answers a question from the vault's own
+notes, and never writes to it.
 
 Full design details are in
 [docs/superpowers/specs/2026-08-22-simple-capture-design.md](docs/superpowers/specs/2026-08-22-simple-capture-design.md).

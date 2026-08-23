@@ -6,7 +6,10 @@ claude-obsidian is `capture`, `organize`, `ask`, `defuddle`, and
 ledgers, no MoC maintenance. `capture`, `organize`, and `ask` need no
 network access; `defuddle` and `autoresearch` require explicit,
 per-request consent before any egress, and `defuddle` additionally
-requires an external Defuddle-style extractor the user provides. See
+requires an external Defuddle-style extractor the user provides. Notes
+are filed under `notes/<topic>/` or `projects/<project-slug>/` (never
+at the vault root directly), and `indexes/<Topic>.md` pages give a
+fast entry point into each `notes/` topic. See
 [docs/superpowers/specs/2026-08-22-simple-capture-design.md](docs/superpowers/specs/2026-08-22-simple-capture-design.md)
 for the design and
 [skills/capture/references/note-format.md](skills/capture/references/note-format.md)
@@ -25,8 +28,9 @@ vault (opened in Obsidian or not) and invokes a skill.
    reads its own [program.md](skills/autoresearch/references/program.md)
    for research budget and evidence-discipline defaults.
 3. Resolve the vault as the current directory, or one the user names.
-   `capture` creates `inbox/` and `attachments/` in it on first use if they
-   don't exist.
+   `capture` creates `inbox/`, `notes/`, `projects/`, `indexes/`,
+   `templates/`, and `attachments/` in it on first use if any don't
+   exist.
 
 Behavior, triggers, and out-of-scope boundaries for each skill are fully
 specified in its own `SKILL.md` — this file doesn't duplicate them.
