@@ -46,6 +46,15 @@ Core workflows are `wiki`, `save`, `wiki-ingest`, `wiki-query`, and
 `wiki-mode`, `wiki-retrieve`, and `wiki-cli`. Reference skills are
 `obsidian-markdown`, `obsidian-bases`, and `think`.
 
+A separate, minimal parallel system — `capture`, `organize`, and `ask` —
+files one plain Markdown note per source with no transaction bundle, no
+ledgers, and no MoC maintenance. See
+[docs/superpowers/specs/2026-08-22-simple-capture-design.md](docs/superpowers/specs/2026-08-22-simple-capture-design.md)
+for the design and [skills/capture/references/note-format.md](skills/capture/references/note-format.md)
+for the note format they share. This set does not use the mutation
+protocol below — plain file writes/moves are sufficient for its
+single-agent, non-concurrent failure modes.
+
 ## Mutation protocol
 
 One logical knowledge operation is one recoverable transaction:
