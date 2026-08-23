@@ -27,10 +27,13 @@ vault (opened in Obsidian or not) and invokes a skill.
    slug-uniqueness rule, and linking pass. `autoresearch` additionally
    reads its own [program.md](skills/autoresearch/references/program.md)
    for research budget and evidence-discipline defaults.
-3. Resolve the vault as the current directory, or one the user names.
-   `capture` creates `inbox/`, `notes/`, `projects/`, `indexes/`,
-   `templates/`, and `attachments/` in it on first use if any don't
-   exist.
+3. Resolve the vault: an explicit directory named in the request, then
+   the `OBSIDIAN_VAULT` environment variable if set, then the current
+   directory. Set `OBSIDIAN_VAULT` once to use `ask`/`capture`/etc. from
+   any other project's Claude Code or Codex session without repeating
+   the path. `capture` creates `inbox/`, `notes/`, `projects/`,
+   `indexes/`, `templates/`, and `attachments/` in the resolved vault on
+   first use if any don't exist.
 
 Behavior, triggers, and out-of-scope boundaries for each skill are fully
 specified in its own `SKILL.md` — this file doesn't duplicate them.

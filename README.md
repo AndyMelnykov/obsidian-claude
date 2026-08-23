@@ -27,8 +27,25 @@ links the note to genuinely related notes. Notes land under
 `notes/<topic>/` for reference material or `projects/<project-slug>/`
 for an active initiative — `capture` asks if it's genuinely unsure
 which, rather than guessing; `inbox/` is the fallback when neither is
-confident. Each `notes/` topic gets a matching `indexes/<Topic>.md`
-entry-point page, maintained automatically as notes are added.
+confident. If you'd rather decide later, just say "add this to inbox"
+instead of "capture this" and it skips straight there. Each `notes/`
+topic gets a matching `indexes/<Topic>.md` entry-point page, maintained
+automatically as notes are added.
+
+You can also drop a file straight into `inbox/` yourself (through
+Obsidian, or the filesystem) without going through `capture` at all —
+`organize` will recognize it's not yet in the note template's shape and
+wrap it in on its next pass, without changing your wording.
+
+Working from a different project's Claude Code or Codex session (or a
+different chat entirely) and want `ask`/`capture` to still find this
+vault? Set `OBSIDIAN_VAULT=/path/to/this/vault` once (e.g. in your
+shell profile) instead of stating the path every time.
+
+Using Claude.ai or ChatGPT in the browser — for a YouTube summary, say
+— note that the web chat itself can't reach your local vault; get the
+summary there, then paste it into a local `capture` request the same
+way you'd paste any other text.
 
 Once you've captured a few things:
 
