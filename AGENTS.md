@@ -2,13 +2,18 @@
 
 This repository now holds two systems:
 
-- **`capture` / `organize` / `ask`** — the current, primary system. Three
-  plain-Markdown Claude Code skills at `skills/<name>/SKILL.md`, with no
-  Python core, no transaction bundles, no ledgers, no MoC maintenance. See
+- **`capture` / `organize` / `ask` / `defuddle` / `autoresearch`** — the
+  current, primary system. Five plain-Markdown Claude Code skills at
+  `skills/<name>/SKILL.md`, with no Python core, no transaction bundles,
+  no ledgers, no MoC maintenance. `capture`, `organize`, and `ask` need no
+  network access; `defuddle` and `autoresearch` require explicit,
+  per-request consent before any egress, and `defuddle` additionally
+  requires an external Defuddle-style extractor the user provides. See
   [docs/superpowers/specs/2026-08-22-simple-capture-design.md](docs/superpowers/specs/2026-08-22-simple-capture-design.md)
-  for the design and
+  for the original design (its "Deferred" section is what
+  `defuddle`/`autoresearch` originally postponed, now implemented) and
   [skills/capture/references/note-format.md](skills/capture/references/note-format.md)
-  for the note format the three skills share.
+  for the note format all five skills share.
 - **The legacy transaction-based system** — everything else this repo used
   to be (12 skills, the `claude_obsidian/` Python core, `scripts/`,
   `templates/`, `agents/`, `examples/`, and the older top-level docs). It is
@@ -21,17 +26,18 @@ This repository now holds two systems:
 Start with the primary system below unless you're specifically working on
 something under `archive/`.
 
-## Primary system: capture / organize / ask
+## Primary system: capture / organize / ask / defuddle / autoresearch
 
 No product/vault distinction, no marker file, no registration step. The
 user just points Claude Code at whatever directory they treat as their
 vault (opened in Obsidian or not) and invokes a skill.
 
-1. Read the skill (`capture`, `organize`, or `ask`) completely from
-   `skills/<name>/SKILL.md`.
+1. Read the skill completely from `skills/<name>/SKILL.md`.
 2. Read [skills/capture/references/note-format.md](skills/capture/references/note-format.md)
-   — all three skills share this note format, folder-placement heuristic,
-   slug-uniqueness rule, and linking pass.
+   — all five skills share this note format, folder-placement heuristic,
+   slug-uniqueness rule, and linking pass. `autoresearch` additionally
+   reads its own [program.md](skills/autoresearch/references/program.md)
+   for research budget and evidence-discipline defaults.
 3. Resolve the vault as the current directory, or one the user names.
    `capture` creates `inbox/` and `attachments/` in it on first use if they
    don't exist.
@@ -39,7 +45,10 @@ vault (opened in Obsidian or not) and invokes a skill.
 Behavior, triggers, and out-of-scope boundaries for each skill are fully
 specified in its own `SKILL.md` — this file doesn't duplicate them.
 `organize` never runs automatically; `ask` never writes to the vault;
-neither skill uses transactions, ledgers, or an index/MoC.
+`defuddle` and `autoresearch` never fetch or research without explicit
+per-request consent, and never file a note without a separate, later
+consent to keep the result. None of the five uses transactions, ledgers,
+or an index/MoC.
 
 ## Archived legacy system
 

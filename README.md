@@ -2,14 +2,16 @@
 
 <p align="center">
   <strong>Capture a source, file it into your Obsidian vault, ask questions from what's already there.</strong><br>
-  Three plain Claude Code skills, no plugin core, no database — just Markdown files you own.
+  Five plain Claude Code skills, no plugin core, no database — just Markdown files you own.
 </p>
 
 claude-obsidian is a local-first note system for Claude Code and other
 [Agent Skills](https://agentskills.io) hosts. `capture`, `organize`, and
 `ask` turn a source (pasted text, a file, an image) into one short,
 linked Markdown note, sorted into a folder structure that makes sense —
-no transactions, ledgers, or index maintenance required.
+no transactions, ledgers, or index maintenance required. `defuddle` and
+`autoresearch` extend that to web pages and bounded research, each behind
+its own explicit network consent.
 
 ## Quick start
 
@@ -45,6 +47,8 @@ Full design details are in
 | `capture` | Source → one filed, linked Markdown note |
 | `organize` | Sort `inbox/` into topic folders; audit for unlinked notes |
 | `ask` | Read-only, source-cited answers from the vault |
+| `defuddle` | Fetch and clean one HTTPS page (explicit consent), then file it like `capture` |
+| `autoresearch` | Bounded web research (explicit consent), filed as one or more notes |
 
 Each skill's exact contract lives in `skills/<name>/SKILL.md`; the note
 format and folder-placement rules they share live in
@@ -60,14 +64,13 @@ format and folder-placement rules they share live in
 
 This repo previously shipped a much larger transaction-based system: 12
 additional skills, a Python core (`claude_obsidian/`), source/claim
-ledgers, address allocation, and Map-of-Content maintenance. It's
-preserved under [`archive/`](archive/) for reference and possible future
-reuse (its web-fetching and research logic in particular is intended to
-be carried forward once redesigned against the new note format — see the
-design spec's "Deferred: defuddle and autoresearch" section). It is not
-wired up as active skills in this checkout; see
+ledgers, address allocation, and Map-of-Content maintenance, including
+transaction-based versions of `defuddle` and `autoresearch`. It's
+preserved under [`archive/`](archive/) for reference — not wired up as
+active skills in this checkout. The active `defuddle` and `autoresearch`
+above are the redesigned versions that file plain notes instead; see
 [archive's AGENTS.md section](AGENTS.md#archived-legacy-system) if you
-need to work with it directly.
+need to work with the original transaction-based copies directly.
 
 ## Lineage and license
 
