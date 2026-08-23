@@ -3,6 +3,17 @@
 Shared by `capture`, `organize`, `ask`, `defuddle`, and `autoresearch`.
 Read this before writing or moving any note.
 
+## Resolving the vault
+
+In this order:
+
+1. A directory the user explicitly names in the current request —
+   always wins.
+2. The `OBSIDIAN_VAULT` environment variable, if set — lets `ask` and
+   the other skills work from any project directory (a different repo,
+   a different chat) without repeating the path every time.
+3. The current directory, as a last-resort fallback.
+
 ## Vault layout
 
 ```
@@ -26,8 +37,13 @@ vault/
 This is a fixed minimal top-level skeleton — `capture` creates all six
 folders on first use if any are missing. Topic folders under `notes/`
 and project folders under `projects/` are still freely inferred by
-name (nested subtopics allowed); only the six top-level names are
-fixed.
+name; only the six top-level names are fixed.
+
+Keep nesting shallow: at most one subtopic level under a topic or
+project (`notes/<topic>/<subtopic>/<slug-title>.md` or
+`projects/<project-slug>/<subtopic>/<slug-title>.md`) — never deeper.
+When a grouping seems to need a third level, that's a signal it should
+be its own topic or project instead.
 
 `inbox/` is where a note lands when `capture` isn't confident whether
 something is a `notes/` topic or a `projects/` initiative, or which one
@@ -114,6 +130,13 @@ general note (as opposed to simply "no existing folder matches," which
 is an `inbox/` case), ask the user directly — e.g. "Is this part of an
 ongoing project, or a general reference note?" — rather than picking
 silently.
+
+**Explicit override:** when the user's request itself says to add it
+to the inbox (e.g. "add this to inbox", "drop this in the inbox",
+"just save it for now") rather than a general "capture/save/file this",
+skip this decision entirely and file straight to `inbox/` — that's an
+explicit instruction, not a fallback guess, and defers the placement
+call to a later `organize` pass.
 
 ## Indexes
 
