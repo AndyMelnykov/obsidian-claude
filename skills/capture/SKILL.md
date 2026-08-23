@@ -1,6 +1,6 @@
 ---
 name: capture
-description: "Capture a source — pasted text, a local file path, an image, or a URL — into the vault as one plain Markdown note: derive a title/slug, place it in notes/, projects/, or inbox/, copy any binary attachment, keep the topic's index page current, and add wikilinks to genuinely related notes. Use when the user gives Claude a source and asks to capture/save/file it. Plain file reads/writes/copies only — no transactions, ledgers, or MoCs."
+description: "Capture a source — pasted text, a local file path, an image, or a URL — into the vault as one plain Markdown note: derive a title/slug, place it in notes/, projects/, or inbox/ (or straight to inbox/ if the user explicitly asked for that), copy any binary attachment, keep the topic's index page current, and add wikilinks to genuinely related notes. Use when the user gives Claude a source and asks to capture/save/file/add-to-inbox it. Plain file reads/writes/copies only — no transactions, ledgers, or MoCs."
 ---
 
 # Capture a source into the vault
@@ -16,9 +16,12 @@ user hands Claude a source and asks to capture/save/file it.
 
 ## Steps
 
-1. **Resolve the vault.** Use the current directory, or the directory
-   the user names. Create `inbox/`, `notes/`, `projects/`, `indexes/`,
-   `templates/`, and `attachments/` in it if any don't already exist.
+1. **Resolve the vault** per
+   [Resolving the vault](references/note-format.md#resolving-the-vault)
+   (an explicit directory named in the request, then `OBSIDIAN_VAULT`,
+   then the current directory). Create `inbox/`, `notes/`, `projects/`,
+   `indexes/`, `templates/`, and `attachments/` in it if any don't
+   already exist.
 2. **Read the note template.** Read `templates/note-template.md`
    (create it with the seed content from
    [the note format reference](references/note-format.md#note-format)
@@ -45,7 +48,10 @@ user hands Claude a source and asks to capture/save/file it.
    [folder placement](references/note-format.md#folder-placement-notes-vs-projects-vs-inbox).
    Check [indexes/](references/note-format.md#indexes) before creating
    a brand-new `notes/` topic folder. Ask the user when it's genuinely
-   ambiguous between a project and a general note.
+   ambiguous between a project and a general note. If the user's
+   request explicitly says to add it to the inbox rather than asking
+   generally to capture/save/file it, skip this decision and go
+   straight to `inbox/` — an explicit instruction, not a guess.
 7. **Write the note** using the template's current roles: source,
    content (a summary in the user's own words, not a copy — one full
    note, never split into several), and connections if anything is
