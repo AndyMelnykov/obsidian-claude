@@ -1,6 +1,6 @@
 ---
 name: ask
-description: "Answer a question from what's already captured in the vault: grep across every folder for relevant terms, read the matching notes, and answer directly from their content with [[wikilink]] citations — saying plainly when the vault doesn't have an answer rather than silently falling back to general knowledge. Read-only, never writes to the vault. Use when the question should be answered from existing vault notes, not when the user is handing Claude something new to capture."
+description: "Answer a question from what's already captured in the vault: check indexes/ for a matching topic, then grep across every folder for relevant terms, read the matching notes, and answer directly from their content with [[wikilink]] citations — saying plainly when the vault doesn't have an answer rather than silently falling back to general knowledge. Read-only, never writes to the vault. Use when the question should be answered from existing vault notes, not when the user is handing Claude something new to capture."
 ---
 
 # Ask the vault
@@ -12,10 +12,14 @@ conversation content (pasted text) — `ask` doesn't do that automatically.
 ## Steps
 
 1. **Resolve the vault**, the same way as `capture`.
-2. **Grep the whole vault** — all folders, not just one — for terms from
-   the question: note titles, frontmatter tags, and body text. Read the
-   notes that look relevant, starting with a handful; read more only if
-   the question clearly needs broader coverage.
+2. **Check `indexes/` first** for a topic index matching the question
+   — per [Indexes](../capture/references/note-format.md#indexes), it's
+   a faster, curated map of what exists and where than a cold grep. If
+   nothing there covers it, or the question needs more than the
+   index's own notes, **grep the whole vault** — all folders — for
+   terms from the question: note titles, frontmatter tags, and body
+   text. Read the notes that look relevant, starting with a handful;
+   read more only if the question clearly needs broader coverage.
 3. **Answer directly from what those notes say.** If the vault doesn't
    have an answer, say so plainly rather than guessing or silently
    falling back to general knowledge. It's fine to answer from general
