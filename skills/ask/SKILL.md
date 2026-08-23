@@ -11,7 +11,13 @@ conversation content (pasted text) — `ask` doesn't do that automatically.
 
 ## Steps
 
-1. **Resolve the vault**, the same way as `capture`.
+1. **Resolve the vault** per
+   [Resolving the vault](../capture/references/note-format.md#resolving-the-vault)
+   — an explicit directory named in the request, then the
+   `OBSIDIAN_VAULT` environment variable, then the current directory.
+   The `OBSIDIAN_VAULT` fallback is what lets this work consistently
+   from an unrelated project directory or a different chat session,
+   without repeating the vault path every time.
 2. **Check `indexes/` first** for a topic index matching the question
    — per [Indexes](../capture/references/note-format.md#indexes), it's
    a faster, curated map of what exists and where than a cold grep. If
