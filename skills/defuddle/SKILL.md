@@ -75,16 +75,24 @@ and follow its rules:
 
 1. Derive a title and slug from the page; check the whole vault for a
    filename collision before writing (never silently overwrite).
-2. Decide where the note belongs using the folder-placement heuristic,
-   or `inbox/` if unsure.
-3. Write the note: frontmatter with `source: <the HTTPS URL>`, a 2-6
-   sentence `## Summary`, and a `## Notes` section holding the cleaned
-   page's key points or a short excerpt — not the full cleaned page
-   verbatim unless it's already short. Keep the original cleaned
-   Markdown available in the conversation in case the user wants more
-   of it; don't dump the entire page into the vault by default.
-4. Run the linking pass against the rest of the vault.
-5. Report the note's path and any links added.
+2. Decide the destination — `projects/<slug>/`, `notes/<topic>/`, or
+   `inbox/` — per
+   [folder placement](../capture/references/note-format.md#folder-placement-notes-vs-projects-vs-inbox),
+   checking `indexes/` before creating a new `notes/` topic folder and
+   asking the user if it's genuinely ambiguous between project and
+   general note.
+3. Write the note using the current template's roles: source (the
+   HTTPS URL), content holding the cleaned page's key points or a
+   short excerpt — not the full cleaned page verbatim unless it's
+   already short — and connections if anything is genuinely related.
+   Keep the original cleaned Markdown available in the conversation in
+   case the user wants more of it; don't dump the entire page into the
+   vault by default.
+4. If the note landed in `notes/<topic>/`, update
+   [the index](../capture/references/note-format.md#indexes) for that
+   topic.
+5. Report the note's path, the index updated (if any), and any links
+   added.
 
 No transaction bundle, no ledger, no `.raw/` payload store. This skill
 never marks anything as canonical or ingested on its own.

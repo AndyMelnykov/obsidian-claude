@@ -76,17 +76,23 @@ its own note when that improves retrieval rather than one long page:
 
 1. Derive a title and slug per note; check the whole vault for a
    filename collision before writing.
-2. Decide where each note belongs using the folder-placement heuristic,
-   or `inbox/` if unsure — a fresh topic from a research run is often a
-   legitimate new folder.
-3. Write each note: frontmatter with `source: autoresearch` (list the
-   primary source URLs in the body instead, since a dossier draws on
-   several), a `## Summary`, and a `## Notes` section holding the
-   evidence-honest findings from the step above, ending with a short
-   "Sources" list (URL, title, date) for what was actually cited.
-4. Run the linking pass against the rest of the vault, and link the
-   dossier's own notes to each other when they cover related questions.
-5. Report each note's path and the links added.
+2. Decide each note's destination — `projects/<slug>/` when the
+   research was explicitly for an active initiative, otherwise
+   `notes/<topic>/`, or `inbox/` if unsure — per
+   [folder placement](../capture/references/note-format.md#folder-placement-notes-vs-projects-vs-inbox).
+   A fresh topic from a research run is often a legitimate new
+   `notes/` folder; check `indexes/` first before creating one.
+3. Write each note using the current template's roles: source
+   (`autoresearch`, with the primary source URLs listed in the content
+   instead, since a dossier draws on several), content holding the
+   evidence-honest findings from the step above ending with a short
+   "Sources" list (URL, title, date) for what was actually cited, and
+   connections if genuinely related.
+4. For each note filed into `notes/<topic>/`, update
+   [the index](../capture/references/note-format.md#indexes) for that
+   topic, and link the dossier's own notes to each other when they
+   cover related questions.
+5. Report each note's path, the indexes updated, and the links added.
 
 If the user wants an *existing* note updated with new findings instead
 of a new one, that's a distinct, explicit edit — this skill doesn't
