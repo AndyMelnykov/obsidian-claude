@@ -1,0 +1,14 @@
+{
+  "name": "obsidian-claude-eval-harness",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Context-engineering experiment eval harness (dev tool, not part of the skills product).",
+  "scripts": {
+    "test": "node --test",
+    "eval": "node runEval.js"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.32.0"
+  }
+}
