@@ -1,0 +1,58 @@
+[
+  {
+    "id": "q1-direct-mcp-authz",
+    "question": "What did I conclude about MCP authorization?",
+    "type": "direct",
+    "expectedNotes": ["mcp-authorization"],
+    "expectedUnknown": false
+  },
+  {
+    "id": "q2-direct-tool-vs-hitl",
+    "question": "What's the difference between tool-using agents and human-in-the-loop design?",
+    "type": "direct",
+    "expectedNotes": ["tool-using-agents", "human-in-the-loop"],
+    "expectedUnknown": false
+  },
+  {
+    "id": "q3-synthesis-context-product",
+    "question": "How do my notes connect context engineering and product operating models?",
+    "type": "synthesis",
+    "expectedNotes": ["context-engineering", "product-development-with-agents"],
+    "expectedUnknown": false
+  },
+  {
+    "id": "q4-synthesis-mcp-eval",
+    "question": "How does MCP security relate to what I've written about agent evaluation?",
+    "type": "synthesis",
+    "expectedNotes": ["mcp-security", "agent-evaluation-august"],
+    "expectedUnknown": false
+  },
+  {
+    "id": "q5-temporal-agent-eval",
+    "question": "What changed in my view on agent evaluation between June and August?",
+    "type": "temporal",
+    "expectedNotes": ["agent-evaluation-june", "agent-evaluation-august"],
+    "expectedUnknown": false
+  },
+  {
+    "id": "q6-negative-fine-tuning",
+    "question": "What did I write about fine-tuning GPT models?",
+    "type": "negative",
+    "expectedNotes": [],
+    "expectedUnknown": true
+  },
+  {
+    "id": "q7-negative-quantum",
+    "question": "What's my documented opinion on quantum computing hardware roadmaps?",
+    "type": "negative",
+    "expectedNotes": [],
+    "expectedUnknown": true
+  },
+  {
+    "id": "q8-source-sensitive-tokens",
+    "question": "Which source supports the claim that structured context can reduce unnecessary token usage?",
+    "type": "source-sensitive",
+    "expectedNotes": ["context-management-for-ai-agents"],
+    "expectedUnknown": false
+  }
+]
