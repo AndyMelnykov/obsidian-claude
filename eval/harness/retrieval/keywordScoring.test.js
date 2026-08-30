@@ -8,6 +8,8 @@ test('stem strips common inflectional suffixes', () => {
   assert.equal(stem('documented'), 'document');
   assert.equal(stem('categories'), 'category');
   assert.equal(stem('boxes'), 'box');
+  assert.equal(stem('notes'), 'note');
+  assert.equal(stem('changes'), 'change');
 });
 
 test('stem leaves words with no matching suffix, or a double-s ending, unchanged', () => {
@@ -36,42 +38,49 @@ test('buildCorpusStats computes totalDocs, avgDocLength, and per-term document f
   });
 });
 
-test('bm25Score matches the textbook BM25 formula for a known corpus and query', () => {
+test('bm25Score is sensitive to term frequency saturation (k1) and document-length normalization (b)', () => {
+  // doc1: length 4, 'mcp' appears twice (tf=2) — term-frequency saturation matters here
+  // doc2: length 2 (shorter than avgDocLength=4) — length normalization matters here
+  // doc3: length 6, no query terms — must score 0 and be filtered by rankNotes
   const corpusStats = {
     totalDocs: 3,
-    avgDocLength: 3,
+    avgDocLength: 4,
     docFrequency: {
       mcp: 2, authorization: 1, scope: 1,
-      security: 1, tool: 1,
-      agent: 1, context: 1, engine: 1
+      security: 1,
+      agent: 1, context: 1, engine: 1, model: 1, value: 1
     }
   };
-  const k1 = 1.5;
-  const b = 0.75;
-  const docLength = 3;
+  const queryStems = ['mcp', 'authorization'];
 
-  function expectedTermScore(term, tf) {
-    const df = corpusStats.docFrequency[term] || 0;
-    const idf = Math.log((corpusStats.totalDocs - df + 0.5) / (df + 0.5) + 1);
-    return idf * (tf * (k1 + 1)) / (tf + k1 * (1 - b + b * (docLength / corpusStats.avgDocLength)));
-  }
+  const doc1Stems = ['mcp', 'authorization', 'mcp', 'scope'];
+  const doc2Stems = ['mcp', 'security'];
+  const doc3Stems = ['agent', 'context', 'engine', 'agent', 'model', 'value'];
 
-  const doc1Stems = ['mcp', 'authorization', 'scope'];
-  const expectedDoc1Score = expectedTermScore('mcp', 1) + expectedTermScore('authorization', 1);
-  const actualDoc1Score = bm25Score(['mcp', 'authorization'], doc1Stems, corpusStats, k1, b);
-  assert.ok(Math.abs(actualDoc1Score - expectedDoc1Score) < 1e-9);
+  // Golden values computed independently from the textbook BM25 formula
+  // (k1=1.5, b=0.75) for this exact fixture — not derived by calling bm25Score.
+  const expectedDoc1Score = 1.652263009077063;
+  const expectedDoc2Score = 0.6064562958009491;
+  const expectedDoc3Score = 0;
 
-  const doc2Stems = ['mcp', 'security', 'tool'];
-  const expectedDoc2Score = expectedTermScore('mcp', 1); // 'authorization' has tf=0 in doc2, contributes 0
-  const actualDoc2Score = bm25Score(['mcp', 'authorization'], doc2Stems, corpusStats, k1, b);
-  assert.ok(Math.abs(actualDoc2Score - expectedDoc2Score) < 1e-9);
+  const actualDoc1Score = bm25Score(queryStems, doc1Stems, corpusStats);
+  const actualDoc2Score = bm25Score(queryStems, doc2Stems, corpusStats);
+  const actualDoc3Score = bm25Score(queryStems, doc3Stems, corpusStats);
+
+  assert.ok(Math.abs(actualDoc1Score - expectedDoc1Score) < 1e-9,
+    `doc1: expected ${expectedDoc1Score}, got ${actualDoc1Score}`);
+  assert.ok(Math.abs(actualDoc2Score - expectedDoc2Score) < 1e-9,
+    `doc2: expected ${expectedDoc2Score}, got ${actualDoc2Score}`);
+  assert.equal(actualDoc3Score, expectedDoc3Score);
 });
 
-test('rankNotes filters out zero-score notes and sorts the rest descending', () => {
+test('rankNotes filters out zero-score notes and sorts the rest descending, regardless of input order', () => {
+  // Input order is deliberately NOT in score order (doc3, doc2, doc1) so that
+  // deleting rankNotes' .sort() call would make this test fail.
   const notes = [
-    { slug: 'doc1', stems: ['mcp', 'authorization', 'scope'] },
-    { slug: 'doc2', stems: ['mcp', 'security', 'tool'] },
-    { slug: 'doc3', stems: ['agent', 'context', 'engine'] }
+    { slug: 'doc3', stems: ['agent', 'context', 'engine', 'agent', 'model', 'value'] },
+    { slug: 'doc2', stems: ['mcp', 'security'] },
+    { slug: 'doc1', stems: ['mcp', 'authorization', 'mcp', 'scope'] }
   ];
   const ranked = rankNotes(['mcp', 'authorization'], notes);
   assert.equal(ranked.length, 2);
