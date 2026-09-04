@@ -8,3 +8,4 @@ Thumbs.db
 # Eval harness (dev tool)
 eval/harness/node_modules/
 eval/harness/.env
+eval/vault/.embeddings/
