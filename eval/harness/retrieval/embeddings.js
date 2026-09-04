@@ -8,7 +8,8 @@ const MODEL_NAME = 'Xenova/all-MiniLM-L6-v2';
 let extractorPromise;
 function getExtractor() {
   if (!extractorPromise) {
-    extractorPromise = pipeline('feature-extraction', MODEL_NAME);
+    // 8-bit quantized weights (library default), pinned revision for reproducible eval runs.
+    extractorPromise = pipeline('feature-extraction', MODEL_NAME, { quantized: true, revision: 'main' });
   }
   return extractorPromise;
 }
@@ -39,7 +40,7 @@ export async function embedNotesWithCache(notes, cachePath) {
   let cacheChanged = false;
 
   for (const note of notes) {
-    const hash = hashContent(note.text);
+    const hash = hashContent(`${MODEL_NAME}\n${note.text}`);
     const cached = cache[note.slug];
     if (cached && cached.hash === hash) {
       results.push({ slug: note.slug, vector: cached.vector });

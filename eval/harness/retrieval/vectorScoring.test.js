@@ -40,3 +40,7 @@ test('rankByCosineSimilarity returns all notes when topK exceeds the count', () 
   assert.equal(ranked.length, 1);
   assert.equal(ranked[0].slug, 'a');
 });
+
+test('cosineSimilarity throws on mismatched vector lengths', () => {
+  assert.throws(() => cosineSimilarity([1, 0, 0], [1, 0]), /vector length mismatch/);
+});

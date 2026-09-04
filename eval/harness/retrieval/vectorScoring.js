@@ -1,4 +1,7 @@
 export function cosineSimilarity(a, b) {
+  if (a.length !== b.length) {
+    throw new Error(`vector length mismatch: ${a.length} vs ${b.length}`);
+  }
   let dot = 0;
   let normA = 0;
   let normB = 0;
