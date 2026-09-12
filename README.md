@@ -49,28 +49,30 @@ database:
 
 ## Demo
 
-No recorded demo yet (see [Limitations](#limitations)) — here's the
-shape of a real session:
+A real, recorded session — capture, organize, a cited answer, a correct
+refusal, and a four-way retrieval-mode comparison on one question — is
+in [`docs/evidence/demo-transcript.md`](docs/evidence/demo-transcript.md).
+Short excerpt:
 
 ```text
-> Capture this into my vault: [pastes an article on MCP authorization]
-capture: filed notes/ai-agents/mcp-authorization.md, updated
-indexes/AI-Agents.md, linked to [[MCP security]].
-
 > Ask the vault: what did I conclude about MCP authorization?
-ask: You concluded that every connected server should be scoped to the
-least set of capabilities the current task needs, requested per
-session rather than granted once and cached indefinitely.
+ask: You concluded that MCP authorization should scope every connected
+server to the least set of capabilities the current task needs, not the
+most the server offers — enforced at request time, not connection time.
+A server that can read a calendar and send email shouldn't be trusted
+with both permissions simultaneously just because a user approved it
+once; each capability should require its own explicit grant, re-checked
+per session rather than cached indefinitely.
 
 Sources:
 - [[MCP authorization]]
 
-> Ask the vault: what's my documented opinion on quantum computing
-  hardware roadmaps?
-ask: The vault doesn't have anything on that — no note matches.
+> Ask the vault: what did I write about fine-tuning GPT models?
+ask: The vault doesn't have anything on fine-tuning GPT models — no note
+matches.
 ```
 
-The refusal in the third turn is the important part: `ask` distinguishes
+The refusal in the second turn is the important part: `ask` distinguishes
 "I don't know" from a guess, every time.
 
 ## Architecture
