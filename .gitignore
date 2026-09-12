@@ -9,3 +9,6 @@ Thumbs.db
 eval/harness/node_modules/
 eval/harness/.env
 eval/vault/.embeddings/
+
+# Subagent-driven-development scratch workspace
+.superpowers/
