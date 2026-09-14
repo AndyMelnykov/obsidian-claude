@@ -208,6 +208,11 @@ general request tracing.
 
 ## Running locally
 
+Installing this into a vault you already have — and using it from VS
+Code, from inside Obsidian, or by clipping pages from a browser — is
+covered step by step in [INSTALL.md](INSTALL.md). The quick start
+below is the shortest path if you just want to try it.
+
 ### Requirements
 
 - Just Claude Code (or another Agent Skills host). No Python, no
