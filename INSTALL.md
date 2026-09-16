@@ -88,10 +88,27 @@ this — the skills fall back to the current directory automatically.
 
 If you'll invoke Claude Code from somewhere else (a different
 project's terminal, this repo's own directory, etc.) and still want it
-to find your vault, set `OBSIDIAN_VAULT` once:
+to find your vault, set `OBSIDIAN_VAULT` once.
+
+**Recommended — works everywhere, including GUI-launched apps:** add
+it to your global `~/.claude/settings.json`:
+
+```json
+{
+  "env": {
+    "OBSIDIAN_VAULT": "C:\\path\\to\\your\\vault"
+  }
+}
+```
+
+This is the one setting shared by the CLI, the VS Code extension, and
+the Obsidian plugins in Mode 2 below, regardless of how you launched
+them.
+
+**Shell-profile alternative — CLI/terminal use only:**
 
 ```powershell
-# PowerShell — add to $PROFILE to persist across sessions
+# PowerShell — add to $PROFILE
 $env:OBSIDIAN_VAULT = "C:\path\to\your\vault"
 ```
 
@@ -100,8 +117,15 @@ $env:OBSIDIAN_VAULT = "C:\path\to\your\vault"
 export OBSIDIAN_VAULT=/path/to/your/vault
 ```
 
+A shell profile only sets the variable for processes launched *from
+that shell* — a new terminal, or VS Code opened with `code .` from it.
+It will **not** reach VS Code, Obsidian, or any other app you launch
+from the Start Menu, taskbar, or dock, since GUI apps don't source
+your shell profile. If you use any GUI-launched front end, use the
+`settings.json` approach above instead.
+
 An explicit path named in a request (e.g. "capture this into
-`D:\notes`") always overrides this.
+`D:\notes`") always overrides either.
 
 ### 3. Verify it works
 
@@ -125,6 +149,16 @@ Delete that test note when you're done — nothing else was touched.
 
 Since VS Code's working directory is the vault itself, `OBSIDIAN_VAULT`
 isn't needed here.
+
+The extension's chat panel is the same Claude Code engine as the CLI —
+same `~/.claude/skills/` discovery from the setup above, same login —
+so nothing here requires using VS Code's integrated terminal. The one
+thing that does differ from a terminal session: if you ever rely on
+`OBSIDIAN_VAULT` instead of opening the vault folder directly (e.g.
+editing a different project but still asking Claude to reach into your
+vault), set it via `~/.claude/settings.json` as described above, not
+just your shell profile — VS Code launched from the Start Menu or
+taskbar won't see a profile-only variable.
 
 ## Mode 2 — Calling Claude from inside Obsidian
 
@@ -197,6 +231,11 @@ reconcile.
 - **Wrong vault, or "vault not found."** Check `OBSIDIAN_VAULT` and
   your current working directory; an explicit path in the request
   always wins over both.
+- **`OBSIDIAN_VAULT` works in a terminal but not from VS Code or
+  Obsidian.** A shell-profile-only variable doesn't reach apps
+  launched from the Start Menu, taskbar, or dock. Set it in
+  `~/.claude/settings.json` instead (see step 2 above) — that reaches
+  the CLI, the VS Code extension, and the Obsidian plugins alike.
 - **Windows: `mklink` fails with "you do not have sufficient
   privilege."** Plain `mklink` needs Developer Mode or admin rights.
   Use `mklink /J` (a junction — no admin required) or fall back to a
