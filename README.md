@@ -2,7 +2,7 @@
 
 <p align="center">
   <strong>Capture a source, file it into your Obsidian vault, ask questions from what's already there.</strong><br>
-  Five plain Claude Code skills, no plugin core, no database — just Markdown files you own.
+  Six plain Claude Code skills, no plugin core, no database — just Markdown files you own.
 </p>
 
 ## Problem
@@ -26,9 +26,9 @@ there.
 
 ## Product
 
-claude-obsidian is `capture`, `organize`, `ask`, `defuddle`, and
-`autoresearch` — five plain Claude Code skills, no plugin core, no
-database:
+claude-obsidian is `capture`, `organize`, `ask`, `defuddle`,
+`autoresearch`, and `bulk-import` — six plain Claude Code skills, no
+plugin core, no database:
 
 1. You hand Claude a source — pasted text, a local file, an image, or
    a URL (via `defuddle`).
@@ -46,6 +46,10 @@ database:
 5. For research beyond your own notes, `autoresearch` runs a bounded,
    consented web-research loop and files a cited dossier only after
    you've reviewed it.
+6. To file many sources at once — a folder, a pasted list of links, a
+   listing file — `bulk-import` reuses `capture`'s and `defuddle`'s own
+   rules across the whole batch in one pass, with one upfront consent
+   for any URLs instead of one per source.
 
 ## Demo
 
@@ -84,7 +88,7 @@ User
 Claude Code (or another Agent Skills host)
   │
   ▼
-Skills: capture · organize · ask · defuddle · autoresearch
+Skills: capture · organize · ask · defuddle · autoresearch · bulk-import
   │
   ▼
 Vault filesystem
@@ -114,6 +118,7 @@ them touch the live `ask` skill.
 | `ask` | Read-only, source-cited answers from the vault |
 | `defuddle` | Fetch and clean one HTTPS page (explicit consent), then file it like `capture` |
 | `autoresearch` | Bounded web research (explicit consent), filed as one or more notes |
+| `bulk-import` | File a directory, pasted list, or listing file of sources in one run, reusing `capture`/`defuddle`'s rules |
 
 Each skill's exact contract lives in `skills/<name>/SKILL.md`; the note
 format and folder-placement rules they share live in
@@ -139,16 +144,18 @@ format and folder-placement rules they share live in
 - `organize` sorting `inbox/` and re-linking, once invoked
 - Either skill updating an `indexes/<Topic>.md` page or adding a wikilink
 - `ask` reading and answering (it never writes)
+- `bulk-import` skipping a filename collision or defaulting ambiguous placement to `inbox/`, inside an already-approved batch — see Requires review/approval below for what's approved once per batch, not once per source
 
 ### Requires review
 
-- Ambiguous project-vs-note placement — `capture`/`organize` ask rather than guess
-- A filename collision — ask whether to update the existing note or create a new one, never silently overwrite
-- A `defuddle` extractor found but not yet reviewed this session — its provenance and version must be confirmed before first use
+- Ambiguous project-vs-note placement — `capture`/`organize` ask rather than guess (`bulk-import` defaults to `inbox/` instead, see above)
+- A filename collision — ask whether to update the existing note or create a new one, never silently overwrite (`bulk-import` skips instead, see above)
+- A `defuddle` extractor found but not yet reviewed this session — its provenance and version must be confirmed before first use; `bulk-import` does this once per batch, not once per URL
 
 ### Requires approval
 
 - `defuddle` fetching any URL — explicit, per-request network consent
+- `bulk-import` fetching any URLs in a batch — one upfront consent listing every URL in the batch, covering all of them at once
 - `autoresearch` reaching the public web — explicit topic, domain, and budget approval before the loop starts
 - Filing a fetched page or research dossier as a note — a separate consent from fetching/researching it
 
