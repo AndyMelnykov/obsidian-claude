@@ -1,7 +1,8 @@
 # Installing claude-obsidian
 
-This guide covers getting `capture`, `organize`, `ask`, `defuddle`, and
-`autoresearch` working against **your own existing Obsidian vault** —
+This guide covers getting `capture`, `organize`, `ask`, `defuddle`,
+`autoresearch`, and `bulk-import` working against **your own existing
+Obsidian vault** —
 not a fresh demo vault — and using them from three different places:
 VS Code, Obsidian itself, and a browser.
 
@@ -14,7 +15,7 @@ those folders don't already exist.
 ## What you're actually installing
 
 There's no plugin core, database, or vault-side install step. The
-"install" is a one-time step that makes five `SKILL.md` files
+"install" is a one-time step that makes six `SKILL.md` files
 discoverable by Claude Code, wherever you run it from. Everything
 after that is just choosing which front end — VS Code, Obsidian, or a
 browser — you talk to Claude Code through.
@@ -42,7 +43,7 @@ This repo keeps its skills at `skills/<name>/SKILL.md`. Claude Code
 auto-discovers skills from your **personal** skills folder,
 `~/.claude/skills/`, in every session regardless of which directory
 you're in — but it does not scan a bare `skills/` folder sitting in
-some other repo. Copy (or link) the five skill folders across once:
+some other repo. Copy (or link) the six skill folders across once:
 
 **Windows (PowerShell) — plain copy:**
 
@@ -50,7 +51,7 @@ some other repo. Copy (or link) the five skill folders across once:
 $repo   = "C:\path\to\claude-obsidian"          # wherever you cloned this repo
 $target = "$env:USERPROFILE\.claude\skills"
 New-Item -ItemType Directory -Force -Path $target | Out-Null
-foreach ($skill in "capture","organize","ask","defuddle","autoresearch") {
+foreach ($skill in "capture","organize","ask","defuddle","autoresearch","bulk-import") {
   Copy-Item -Recurse -Force "$repo\skills\$skill" "$target\$skill"
 }
 ```
@@ -59,7 +60,7 @@ foreach ($skill in "capture","organize","ask","defuddle","autoresearch") {
 rights needed, unlike a real symlink):**
 
 ```powershell
-foreach ($skill in "capture","organize","ask","defuddle","autoresearch") {
+foreach ($skill in "capture","organize","ask","defuddle","autoresearch","bulk-import") {
   cmd /c mklink /J "$target\$skill" "$repo\skills\$skill"
 }
 ```
@@ -70,7 +71,7 @@ foreach ($skill in "capture","organize","ask","defuddle","autoresearch") {
 target=~/.claude/skills
 mkdir -p "$target"
 cd /path/to/claude-obsidian
-for skill in capture organize ask defuddle autoresearch; do
+for skill in capture organize ask defuddle autoresearch bulk-import; do
   ln -s "$(pwd)/skills/$skill" "$target/$skill"   # or: cp -r "skills/$skill" "$target/$skill"
 done
 ```
@@ -190,7 +191,7 @@ reconcile.
 ## Troubleshooting
 
 - **Claude Code never invokes a skill.** Confirm
-  `~/.claude/skills/<name>/SKILL.md` exists for each of the five names
+  `~/.claude/skills/<name>/SKILL.md` exists for each of the six names
   (a common mistake is nesting one level too deep, e.g.
   `~/.claude/skills/skills/capture/...`). Start a new Claude Code
   session after copying/linking — skills load at session start.
@@ -207,7 +208,7 @@ reconcile.
 
 ## Uninstalling
 
-- Delete the five folders under `~/.claude/skills/`.
+- Delete the six folders under `~/.claude/skills/`.
 - Disable/remove the Obsidian community plugin(s) and the Web Clipper
   browser extension.
 - Your vault's `inbox/`, `notes/`, `projects/`, `indexes/`,
