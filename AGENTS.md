@@ -1,12 +1,15 @@
 # claude-obsidian: Agent Instructions
 
-claude-obsidian is `capture`, `organize`, `ask`, `defuddle`, and
-`autoresearch` — five plain-Markdown Claude Code skills at
-`skills/<name>/SKILL.md`, with no Python core, no transaction bundles, no
-ledgers, no MoC maintenance. `capture`, `organize`, and `ask` need no
+claude-obsidian is `capture`, `organize`, `ask`, `defuddle`,
+`autoresearch`, and `bulk-import` — six plain-Markdown Claude Code skills
+at `skills/<name>/SKILL.md`, with no Python core, no transaction bundles,
+no ledgers, no MoC maintenance. `capture`, `organize`, and `ask` need no
 network access; `defuddle` and `autoresearch` require explicit,
 per-request consent before any egress, and `defuddle` additionally
-requires an external Defuddle-style extractor the user provides. Notes
+requires an external Defuddle-style extractor the user provides.
+`bulk-import` files many sources in one run, reusing `capture`'s and
+`defuddle`'s rules with a single upfront consent for any URLs in the
+batch rather than one per source. Notes
 are filed under `notes/<topic>/` or `projects/<project-slug>/` (never
 at the vault root directly), and `indexes/<Topic>.md` pages give a
 fast entry point into each `notes/` topic. See
@@ -15,7 +18,7 @@ for the design and
 [skills/capture/references/note-format.md](skills/capture/references/note-format.md)
 for the note format all five skills share.
 
-## Primary system: capture / organize / ask / defuddle / autoresearch
+## Primary system: capture / organize / ask / defuddle / autoresearch / bulk-import
 
 No product/vault distinction, no marker file, no registration step. The
 user just points Claude Code at whatever directory they treat as their
@@ -40,8 +43,11 @@ specified in its own `SKILL.md` — this file doesn't duplicate them.
 `organize` never runs automatically; `ask` never writes to the vault;
 `defuddle` and `autoresearch` never fetch or research without explicit
 per-request consent, and never file a note without a separate, later
-consent to keep the result. None of the five uses transactions, ledgers,
-or an index/MoC.
+consent to keep the result. `bulk-import` only runs when handed more
+than one source, gets one upfront consent for every URL in its batch
+instead of one per source, and skips/defaults collisions and ambiguous
+placement rather than asking mid-batch. None of the six uses
+transactions, ledgers, or an index/MoC.
 
 ## Reference
 
