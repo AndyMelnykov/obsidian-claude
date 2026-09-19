@@ -156,6 +156,40 @@ Indexes aren't maintained for `projects/` or `inbox/`. There's no
 note-count threshold — the index exists from the topic's first note
 onward.
 
+## Master index
+
+`indexes/README.md` is the vault's single entry point — one page
+above every `indexes/<Topic>.md`, so a person opening the vault (or an
+agent orienting itself) doesn't need to already know which topic to
+look for. `capture` and `organize` maintain it automatically, with no
+separate request needed.
+
+Regenerate it **in full from a fresh scan** every time it changes —
+never patch it incrementally, so it can't drift from the vault's
+actual contents:
+
+- One line per `indexes/<Topic>.md`, sorted alphabetically by topic:
+  `[[Topic]] — ` followed by a fresh one-line description of that
+  topic, written by skimming the notes it lists. The description isn't
+  stored anywhere — it's generated at regeneration time, same as the
+  rest of this page.
+- One line per `projects/<slug>/` folder, sorted alphabetically by
+  slug: the slug deslugified into a title (e.g. `client-onboarding` →
+  `Client Onboarding`).
+- One line for `inbox/`: `N items awaiting triage`, where `N` is a
+  count of the files directly in `inbox/` — a count only, not a
+  per-item list, to keep this page short and avoid duplicating
+  `inbox/`'s own contents.
+
+Regenerate `indexes/README.md` whenever `capture` or `organize`
+changes any of `indexes/<Topic>.md`, `projects/<slug>/`, or `inbox/`'s
+contents — the same invocation points that already touch those three,
+no new trigger.
+
+`ask` does not read `indexes/README.md`. Its `indexes/` lookup, then
+grep, contract is unchanged — the master index is a human/Obsidian
+navigation aid, not a new retrieval hop.
+
 ## Linking pass
 
 Used when filling the connections role:

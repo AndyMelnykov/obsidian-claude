@@ -61,9 +61,13 @@ user hands Claude a source and asks to capture/save/file it.
    `indexes/<Topic>.md` exists per
    [Indexes](references/note-format.md#indexes) and lists the new
    note.
-9. **Look for related notes** and fill the connections role, per the
-   [linking pass](references/note-format.md#linking-pass).
-10. **Report** the note's path, the attachment path (if any), the
+9. **Regenerate the master index.** Regenerate `indexes/README.md` per
+   [Master index](references/note-format.md#master-index) — every
+   capture writes to `projects/<slug>/`, `notes/<topic>/`, or
+   `inbox/`, so this step always runs.
+10. **Look for related notes** and fill the connections role, per the
+    [linking pass](references/note-format.md#linking-pass).
+11. **Report** the note's path, the attachment path (if any), the
     index updated (if any), any links added, and whether it landed in
     `inbox/` for later triage.
 

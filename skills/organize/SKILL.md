@@ -48,11 +48,17 @@ similar.
    topic. A note that's still not a confident fit for either stays in
    `inbox/` — organize doesn't force placement just to empty the
    folder.
-4. **After moving a note**, re-run the
+4. **Regenerate the master index**, once, if anything moved in step 3.
+   Regenerate `indexes/README.md` per
+   [Master index](../capture/references/note-format.md#master-index) —
+   a moved note always changed `inbox/` and one of `projects/<slug>/`
+   or `notes/<topic>/`, so one regeneration after the whole pass covers
+   every change from step 3.
+5. **After moving a note**, re-run the
    [linking pass](../capture/references/note-format.md#linking-pass)
    against the fuller vault — a note captured before a related one
    existed may not have had anything to link to yet.
-5. **Report** what moved where, what got newly linked, what got
+6. **Report** what moved where, what got newly linked, what got
    normalized from a raw drop, and what's still sitting in `inbox/`
    unplaced.
 
